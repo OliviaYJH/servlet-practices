@@ -14,33 +14,30 @@ public class GuestbookDao {
 
 	public List<GuestbookVo> findAll() {
 		List<GuestbookVo> result = new ArrayList<>();
-
-		try (Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(
-						"select id, name, contents, date_format('%Y-%m-%d %h:%i:%s', reg_date) from guestbook order by reg_date desc;");
-				ResultSet rs = pstmt.executeQuery();) {
-
-			while (rs.next()) {
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select id, name, contents, date_format(reg_date, '%Y-%m-%d %h:%i:%s') from guestbook order by reg_date desc");	
+			ResultSet rs = pstmt.executeQuery();
+		) {
+			while(rs.next()) {
 				Long id = rs.getLong(1);
 				String name = rs.getString(2);
 				String contents = rs.getString(3);
 				String regDate = rs.getString(4);
-
+				
 				GuestbookVo vo = new GuestbookVo();
 				vo.setId(id);
 				vo.setName(name);
 				vo.setContents(contents);
 				vo.setRegDate(regDate);
-
+				
 				result.add(vo);
 			}
-
-			rs.close();
-
 		} catch (SQLException e) {
-			System.out.println("드라이버 로딩 실패: " + e);
-		}
-
+			System.out.println("error:" + e);
+		} 
+		
 		return result;
 	}
 

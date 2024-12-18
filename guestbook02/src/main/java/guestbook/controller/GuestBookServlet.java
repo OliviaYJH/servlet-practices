@@ -5,6 +5,7 @@ import java.util.List;
 
 import guestbook.dao.GuestbookDao;
 import guestbook.vo.GuestbookVo;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,10 +21,14 @@ public class GuestBookServlet extends HttpServlet {
 		String action = request.getParameter("a");
 
 		if ("add".equals(action)) {
-
-		} else {
+			
+		} 
+		else {
 			List<GuestbookVo> list = new GuestbookDao().findAll();
-			System.out.println(list);
+			request.setAttribute("list", list);
+
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/index.jsp"); // 보낼 수 있는 dispatcher을 달라
+			rd.forward(request, response);
 		}
 	}
 

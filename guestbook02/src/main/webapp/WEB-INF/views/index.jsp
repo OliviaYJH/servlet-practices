@@ -3,7 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="guestbook.vo.GuestbookVo"%>
 <%
-List<GuestbookVo> list = (List<GuestbookVo>)request.getAttribute("list");
+List<GuestbookVo> list = (List<GuestbookVo>) request.getAttribute("list");
 %>
 <html>
 <head>
@@ -12,7 +12,7 @@ List<GuestbookVo> list = (List<GuestbookVo>)request.getAttribute("list");
 </head>
 <body>
 	<form action="/guestbook02/gb" method="post">
-		<input name="a" value="insert">
+		<input type='hidden' name='a' value='add'>
 		<table border=1 width=500>
 			<tr>
 				<td>이름</td>
@@ -29,19 +29,19 @@ List<GuestbookVo> list = (List<GuestbookVo>)request.getAttribute("list");
 		</table>
 	</form>
 	<%
+	int count = list.size();
 	for (GuestbookVo vo : list) {
 	%>
 	<br>
 	<table width=510 border=1>
 		<tr>
-			<td>[<%=vo.getId()%>]
-			</td>
-			<td><%=vo.getName()%></td>
-			<td><%=vo.getRegDate()%></td>
-			<td><a href="">삭제</a></td>
+			<td>[<%= count-- %>]</td>
+			<td><%= vo.getName()%></td>
+			<td><%= vo.getRegDate()%></td>
+			<td><a href="/guestbook02/gb?a=deleteform&id=<%=vo.getId()%>">삭제</a></td>
 		</tr>
 		<tr>
-			<td colspan=4><%=vo.getContents()%></td>
+			<td colspan=4><%=vo.getContents().replaceAll("\n", "<br>")%></td>
 		</tr>
 	</table>
 	<%
